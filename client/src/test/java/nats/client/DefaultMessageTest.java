@@ -20,7 +20,7 @@ public class DefaultMessageTest {
 
 		final DefaultMessage message = new DefaultMessage(subject, body, queueGroup, request);
 
-		assertEquals(message.getBody(), body);
+		assertEquals(message.getBodyAsString(), body);
 		assertEquals(message.getQueueGroup(), queueGroup);
 		assertEquals(message.getSubject(), subject);
 		assertEquals(message.isRequest(), request);

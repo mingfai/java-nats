@@ -17,6 +17,7 @@
 package nats.client;
 
 import java.io.Closeable;
+import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -70,6 +71,8 @@ public interface Nats extends Closeable {
 	 * @param body    the message body to publish
 	 */
 	void publish(String subject, String body);
+
+    void publish(String subject, ByteBuffer bytes);
 
 	/**
 	 * Publishes a message with the provided body to the specified subject. Any replies to this message will be sent to

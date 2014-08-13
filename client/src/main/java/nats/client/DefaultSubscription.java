@@ -16,6 +16,8 @@
  */
 package nats.client;
 
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -99,7 +101,7 @@ public class DefaultSubscription implements Subscription {
 	}
 
 	@SuppressWarnings("ConstantConditions")
-	public void onMessage(String subject, String body, String replyTo, Executor executor) {
+	public void onMessage(String subject, ByteBuf body, String replyTo, Executor executor) {
 		final int messageCount = receivedMessages.incrementAndGet();
 		if (maxMessages != null && messageCount >= maxMessages) {
 			close();
@@ -117,7 +119,7 @@ public class DefaultSubscription implements Subscription {
 		}
 	}
 
-	protected Message createMessage(String subject, String body, String queueGroup, String replyTo) {
+	protected Message createMessage(String subject, ByteBuf body, String queueGroup, String replyTo) {
 		return new DefaultMessage(subject, body, queueGroup, replyTo != null && replyTo.trim().length() > 0);
 	}
 }

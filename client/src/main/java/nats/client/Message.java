@@ -16,6 +16,7 @@
  */
 package nats.client;
 
+import java.nio.ByteBuffer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,7 +49,9 @@ public interface Message {
 	 *
 	 * @return the body of the message.
 	 */
-	String getBody();
+	String getBodyAsString();
+
+    ByteBuffer getBodyAsBytes();
 
 	/**
 	 * Returns the queue group of the message.

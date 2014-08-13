@@ -16,34 +16,41 @@
  */
 package nats.codec;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+
+import java.nio.charset.Charset;
+
 /**
  * @author Mike Heath <elcapo@gmail.com>
  */
 public class ClientPublishFrame implements ClientFrame {
+    private final Charset charset = Charset.forName("utf-8");
+    private final String subject;
 
-	private final String subject;
+    private final String replyTo;
 
-	private final String replyTo;
+    private final ByteBuf body;
 
-	private final String body;
+    public ClientPublishFrame(String subject, ByteBuf body, String replyTo) {
+        // TODO Validate subject, replyTo What is valid?
+        this.subject = subject;
+        body.markReaderIndex();
+        this.body = body;
+        this.replyTo = replyTo;
+    }
 
-	public ClientPublishFrame(String subject, String body, String replyTo) {
-		// TODO Validate subject, replyTo What is valid?
-		this.subject = subject;
-		this.body = body;
-		this.replyTo = replyTo;
-	}
+    public String getBody() {
+        body.resetReaderIndex();
+        return body.toString(charset);
+    }
 
-	public String getBody() {
-		return body;
-	}
+    public String getReplyTo() {
+        return replyTo;
+    }
 
-	public String getReplyTo() {
-		return replyTo;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
+    public String getSubject() {
+        return subject;
+    }
 
 }

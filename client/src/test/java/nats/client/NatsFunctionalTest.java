@@ -76,7 +76,7 @@ public class NatsFunctionalTest {
 				nats.publish(subject, message);
 				final Message next = iterator.next(2, TimeUnit.SECONDS);
 				assertNotNull(next);
-				assertEquals(next.getBody(), message);
+				assertEquals(next.getBodyAsString(), message);
 			}
 		});
 	}
@@ -220,7 +220,7 @@ public class NatsFunctionalTest {
 				assertEquals(process.waitFor(), 0, "Pub failed");
 				final Message message = iterator.next(5, TimeUnit.SECONDS);
 				assertNotNull(message, "Did not receive a message from server.");
-				assertEquals(message.getBody(), testString);
+				assertEquals(message.getBodyAsString(), testString);
 			}
 		});
 	}

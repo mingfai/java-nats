@@ -70,7 +70,7 @@ public class JavaConfigAnnotationConfigTest {
 		final SubscribeBean subscribeBean = context.getBean(SubscribeBean.class);
 
 		assertEquals(subscribeBean.messages.size(), 1);
-		assertEquals(body, subscribeBean.messages.get(0).getBody());
+		assertEquals(body, subscribeBean.messages.get(0).getBodyAsString());
 	}
 
 	@Configuration

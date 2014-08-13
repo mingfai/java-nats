@@ -16,37 +16,41 @@
  */
 package nats.codec;
 
+import io.netty.buffer.ByteBuf;
+
+import java.nio.charset.Charset;
+
 /**
  * @author Mike Heath <elcapo@gmail.com>
  */
 public class ServerPublishFrame implements ServerFrame {
 
-	private final String id;
-	private final String subject;
-	private final String replyTo;
-	private final String body;
+    private final String id;
+    private final String subject;
+    private final String replyTo;
+    private final ByteBuf body;
 
-	public ServerPublishFrame(String id, String subject, String replyTo, String body) {
-		this.id = id;
-		this.subject = subject;
-		this.replyTo = replyTo;
-		this.body = body;
-	}
+    public ServerPublishFrame(String id, String subject, String replyTo, ByteBuf body) {
+        this.id = id;
+        this.subject = subject;
+        this.replyTo = replyTo;
+        this.body = body;
+        body.markReaderIndex();
+    }
 
-	public String getId() {
-		return id;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public String getReplyTo() {
-		return replyTo;
-	}
+    public String getReplyTo() {
+        return replyTo;
+    }
 
-	public String getSubject() {
-		return subject;
-	}
+    public String getSubject() {
+        return subject;
+    }
 
-	public String getBody() {
-		return body;
-	}
-
+    public ByteBuf getBody() {
+        return body;
+    }
 }

@@ -35,7 +35,7 @@ public class MockNatsTest {
 		final Subscription subscription = nats.subscribe(subject);
 		final MessageIterator iterator = subscription.iterator();
 		nats.publish(subject, message);
-		Assert.assertEquals(iterator.next().getBody(), message);
+		Assert.assertEquals(iterator.next().getBodyAsString(), message);
 	}
 
 	@Test(timeOut = 500)
@@ -45,7 +45,7 @@ public class MockNatsTest {
 		final Subscription subscription = nats.subscribe(subject);
 		final MessageIterator iterator = subscription.iterator();
 		nats.publish(subject);
-		Assert.assertNull(iterator.next().getBody());
+		Assert.assertNull(iterator.next().getBodyAsString());
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class MockNatsTest {
 		nats.request(subject, 1, TimeUnit.SECONDS, new MessageHandler() {
 			@Override
 			public void onMessage(Message message) {
-				Assert.assertEquals(message.getBody(), response);
+				Assert.assertEquals(message.getBodyAsString(), response);
 				flag[0] = true;
 			}
 		});

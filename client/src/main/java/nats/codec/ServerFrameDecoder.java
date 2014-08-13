@@ -63,9 +63,8 @@ public class ServerFrameDecoder extends AbstractFrameDecoder<ServerFrame> {
 				throwTooLongFrameException(context);
 			}
 			final ByteBuf bodyBytes = in.readBytes(length);
-			final String body = new String(bodyBytes.array());
 			in.skipBytes(ByteBufUtil.CRLF.length);
-			return new ServerPublishFrame(id, subject, replyTo, body);
+			return new ServerPublishFrame(id, subject, replyTo, bodyBytes);
 		}
 		matcher = INFO_PATTERN.matcher(command);
 		if (matcher.matches()) {

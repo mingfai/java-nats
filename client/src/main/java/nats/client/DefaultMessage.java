@@ -16,6 +16,10 @@
  */
 package nats.client;
 
+import io.netty.buffer.ByteBuf;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,15 +28,16 @@ import java.util.concurrent.TimeUnit;
  * @author Mike Heath <elcapo@gmail.com>
  */
 public class DefaultMessage implements Message {
-
+    private final static Charset UTF8 = Charset.forName("utf-8");
 	private final String subject;
-	private final String body;
+	private final ByteBuf body;
 	private final String queueGroup;
 	private final boolean isRequest;
 
-	public DefaultMessage(String subject, String body, String queueGroup, boolean request) {
+	public DefaultMessage(String subject, ByteBuf body, String queueGroup, boolean request) {
 		this.subject = subject;
 		this.body = body;
+        body.markReaderIndex();
 		this.queueGroup = queueGroup;
 		isRequest = request;
 	}
@@ -52,11 +57,21 @@ public class DefaultMessage implements Message {
 	}
 
 	@Override
-	public String getBody() {
-		return body;
+	public String getBodyAsString() {
+        synchronized (body) {
+            body.resetReaderIndex();
+            return body.toString(UTF8);
+        }
 	}
 
-	@Override
+    @Override public ByteBuffer getBodyAsBytes() {
+        synchronized (body) {
+            body.resetReaderIndex();
+            return body.nioBuffer();
+        }
+    }
+
+    @Override
 	public void reply(String body) throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
